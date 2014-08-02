@@ -1,0 +1,61 @@
+.clearfix {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+.margin-center {
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.align-center {
+	text-align: center;
+}
+
+.padding-20 {
+	padding: 20px;
+}
+
+.container {
+	margin: 0 auto;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+//sm - 568
+@media screen and (min-width: 35.5em) {
+ .container {
+ 	width: 100%;
+ }
+}
+
+//md - 768
+@media screen and (min-width: 48em) {
+	.container {
+		width: 100%;
+	}
+}
+
+//lg - 1024
+@media screen and (min-width: 64em) {
+	.container {
+		padding-left:0;
+		padding-right:0;
+		width: 70%
+	}
+}
+
+//xl 1280
+@media screen and (min-width: 80em) {
+	.container {
+		padding-left:0;
+		padding-right:0;
+		width: 60%;
+	}
+}

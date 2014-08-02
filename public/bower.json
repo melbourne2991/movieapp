@@ -1,0 +1,23 @@
+{
+  "name": "public",
+  "version": "0.0.0",
+  "authors": [
+    "Will <will@arkade.com.au>"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.18",
+    "jquery": "~2.1.1",
+    "lodash": "~2.4.1",
+    "angular-ui-router": "~0.2.10",
+    "angular-resource": "~1.2.18",
+    "angular-animate": "~1.2.21"
+  }
+}

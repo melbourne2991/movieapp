@@ -1,0 +1,9 @@
+<div class="container">
+	<h1 class="align-center">What genre are you feeling like</h1>
+
+	<div class="pure-g" id="genre-buttons" data-ng-repeat="genre_row in genre_rows">
+		<div data-ng-repeat="genre in genre_row" class="pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
+			<div class="pure-button" data-ng-click="chosenGenre(genre)">{{ genre.name }}</div>
+		</div>
+	</div>
+</div>
