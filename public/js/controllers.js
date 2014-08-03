@@ -8,6 +8,7 @@ controllers.controller('MainController', [
 
 	function($scope, $state, movieApi, chosenGenre) {
 		$scope.menu_hover = false;
+		// $scope.loaded = false;	
 
 		movieApi.getGenres().then(function(results) {
 			console.log(results);
@@ -24,9 +25,8 @@ controllers.controller('MainController', [
 
 			splicer();
 
-			console.log(genre_rows);
-
 			$scope.genre_rows = genre_rows;
+			// $scope.loaded = true;
 		});
 
 		$scope.chosenGenre = function(genre) {
@@ -42,8 +42,7 @@ controllers.controller('BrowseGenre', [
 	'chosenGenre', 
 
 	function($scope, $state, movieApi, chosenGenre) {
-		$scope.genre_name = chosenGenre.genre.name
-
+		$scope.genre_name = chosenGenre.genre.name;
 		$scope.movie_promise = movieApi.getDiscoverByGenre(chosenGenre.genre.id);
 	}]);
 

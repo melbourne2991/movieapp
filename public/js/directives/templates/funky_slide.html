@@ -1,8 +1,8 @@
 <div class="funky-slide clearfix">
-	<div class="nav-arrow left"><span></span></div>
-	<div class="nav-arrow right"><span></span></div>
+	<div class="nav-arrow left" data-ng-click="moveLeft()"><span></span></div>
+	<div class="nav-arrow right" data-ng-click="moveRight()"><span></span></div>
 	<div class="slider-container clearfix">
-		<div data-ng-repeat="slide in slides" class="slide">
+		<div data-ng-repeat="slide in slides" class="slide" data-ng-click="selectSlide(slide)">
 			<img src="{{ slide.image }}">
 		</div>
 	</div>

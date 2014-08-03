@@ -1,5 +1,15 @@
 var services = angular.module('app.services', ['ui.router']);
 
+services.factory('imdbApi', ['$http', function($http) {
+	var api_url = 'http://www.omdbapi.com';
+
+	return {
+		findByTitle: function(title) {
+			return $http.get(api_url + '?t=' + encodeURIComponent(title));
+		}
+	}
+}]);
+
 services.factory('movieApi', ['$http', 'apiConfig', function($http, apiConfig) {
 	var api_url = apiConfig.url;
 	var key 	= apiConfig.key;

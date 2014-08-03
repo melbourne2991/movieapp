@@ -27,6 +27,7 @@
 #layout {
 	position: relative;	
 	padding-bottom: 60px;
+	background: darken($dark_1, 15%);
 }
 
 #topbar {
@@ -119,8 +120,13 @@
 		width: 70px;	
 		top: 0;
 		bottom: 0;
-		opacity: 0.8;
+		opacity: 0.9;
 		cursor: pointer;
+		transition: opacity 0.5s;
+
+		&:hover {
+			opacity: 1;
+		}
 
 		&.left {
 			left: 0px;
@@ -155,17 +161,87 @@
 
 
 	.slider-container {
-		transition: all 10s;
+		transition: all 3s;
+		align-items: center;
+		display: flex;
 	}
 
 	.slide {
 		float: left;
 		transition: 1s all;
 		padding: 20px;
+		height: 100%;
+		cursor: pointer;
+
+		&:hover {
+			background: $dark_1;
+		}
 
 		img {
 			width: 100%;
 		}
+	}
+}
+
+.slide_details {
+	padding: 20px 20px 200px 20px;
+
+	.info {
+		img {
+			width: 100%;
+		}
+	}
+
+	.pure-g > div {
+		padding: 10px;
+
+		&:first-child {
+			padding-left: 0;
+		}
+
+		&:last-child {
+			padding-right: 0;
+		}
+	}
+
+	.header {
+		position: relative;
+		.star-ratings {
+			right: 0;
+		}
+	}
+}
+
+.row-style-1 {
+	background: #181a21;
+	padding: 20px;
+	margin-bottom: 20px;
+
+	h3 {
+		color: #798AC9;
+		margin-top: 0;
+	}
+}
+
+.scroll-to-top-button {
+	width: 70px;
+	height: 70px;
+	border-radius: 5px;
+	text-align: center;
+	position: fixed;
+	padding: 10px;
+	cursor: pointer;
+	background: $light_1;
+	bottom: 20px;
+	right: 20px;
+
+	//svg ratio - 
+	span {
+		width: 50px;
+		height: 50px;
+		background-image: url('../img/scroll_to_top.svg');
+		background-size: cover;
+		display: inline-block;
 	}
 }
 
