@@ -234,6 +234,9 @@
 	background: $light_1;
 	bottom: 20px;
 	right: 20px;
+	opacity: 0;
+
+	transition: opacity 0.4s;
 
 	//svg ratio - 
 	span {
@@ -242,6 +245,10 @@
 		background-image: url('../img/scroll_to_top.svg');
 		background-size: cover;
 		display: inline-block;
+	}
+
+	&.visible {
+		opacity: 1;
 	}
 }
 

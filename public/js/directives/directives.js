@@ -2,18 +2,24 @@ var directives = angular.module('app.directives', ['app.services']);
 
 directives.directive('scrollToTop', [function() {
 	return {
-		template: '<div class="scroll-to-top-button" data-ng-if="visible" data-ng-click="scrollToTop()"><span></span></div>',
+		template: '<div class="scroll-to-top-button" data-ng-class="{visible: visible }" data-ng-click="scrollToTop()"><span></span></div>',
 		transclude: true,
 		scope: {
-			visible: '='
+			// visible: '='
 		},
 		controller: function($scope) { 
-			this.enableScroll = function() {
-				$scope.visible = true;
-			}
+			$(window).on('scroll', function() {
+				if($(document).scrollTop() > 500) {
+					$scope.visible = true;
+				} else {
+					$scope.visible = false;
+				}
+
+			});
 
 			$scope.scrollToTop = function() {
 				$('html, body').animate({scrollTop: 0});
+				$scope.visible = false;
 			}
 		},
 		link: function(scope) {
@@ -56,7 +62,6 @@ directives.directive('cssLoader', [function() {
 
 directives.directive('slideWithDetails', ['$state', '$timeout', 'imdbApi', 'movieApi', function($state, $timeout, imdbApi) {
 	return {
-		require: 'MainController',
 		controller: function($scope, $element, $attrs) {
 			this.selectSlide = function(selected_slide) {
 				$scope.loaded = false;
@@ -83,26 +88,43 @@ directives.directive('slideWithDetails', ['$state', '$timeout', 'imdbApi', 'movi
 	}
 }]);
 
-directives.directive('funkySlide', ['$state', '$timeout', function($state, $timeout) {
+directives.directive('funkySlide', ['$state', '$timeout', 'movieApi', function($state, $timeout, movieApi) {
 	return {
 		require: '^slideWithDetails',
 		templateUrl: 'js/directives/templates/funky_slide.html',
 		scope: {
-			funkySlide: '=',
+			funkySlide: '@',
 			numberOfItemsInView: '@',
-			slideIncrement: '@'
+			slideIncrement: '@',
 		},
 		controller: function($scope, $element, $attrs) {
+			this.imagesReady = [];
+			$scope.slides = [];
+			
+			var genreId = $scope.funkySlide;
+
+			console.log(genreId);
+
+			var page = 1;
+
 			var current_pos = 0;
 
-			$scope.funkySlide.then(function(results) {
+			var number_of_items_in_view 	= $scope.numberOfItemsInView || 4;
+			var slide_increment				= $scope.slideIncrement || number_of_items_in_view;
+			var total_item_count;
+			var item_width;
+			var slide_container_width;
+			var slide_container;
+			var items;
+			var left_arrow;
+			var right_arrow;
+
+			var addResultsToSlider = function(results) {
 				$scope.slides = results;
 
-				$timeout(function() {
-					console.log(results);
+				console.log($scope.slides)
 
-					var number_of_items_in_view 	= $scope.numberOfItemsInView || 4;
-					var slide_increment				= $scope.slideIncrement || number_of_items_in_view;
+				$timeout(function() {
 					var total_item_count 			= $scope.slides.length;
 					var item_width 					= $element.find('.funky-slide').width() / number_of_items_in_view;
 					var slide_container_width 		= total_item_count * item_width;
@@ -135,12 +157,37 @@ directives.directive('funkySlide', ['$state', '$timeout', function($state, $time
 						});
 					};
 				});
-			});
+			}
+
+			var getMovies = function(page){
+				return movieApi.getDiscoverByGenre(genreId, page).then(addResultsToSlider);
+			};
+
+			getMovies(page);
 		},
 		link: function(scope, element, attrs, slideWithDetailsCtrl) {
 			scope.selectSlide = function(slide) {
 				slideWithDetailsCtrl.selectSlide(slide);
 			}
+		}
+	}
+}]);
+
+directives.directive('slide', ['$state', '$timeout', '$http', function($state, $timeout, $http) {
+	return {
+		require: '^funkySlide',
+		scope: {
+			slide: '='
+		},
+		controller: function($scope, $element, $attrs) {
+
+		},
+		link: function(scope, element, attrs, funkySlideCtrl) {
+			$('<img src="' + scope.slide.image + '">').load(function(results, status, xhr) {
+				$(element).append($(this));
+			}).on('error', function() {
+				$(element).remove();
+			});
 		}
 	}
 }]);
@@ -158,9 +205,7 @@ directives.directive('slideDetails', ['$state', '$timeout', '$interval', functio
 
 		},
 		link: function(scope, element, attrs, slideWithDetailsCtrl) {
-			$interval(function() {
-				console.log(scope);
-			}, 3000)
+
 		}
 	}
 }]);

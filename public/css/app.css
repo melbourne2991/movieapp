@@ -221,10 +221,14 @@ body {
   cursor: pointer;
   background: #3a3f4f;
   bottom: 20px;
-  right: 20px; }
+  right: 20px;
+  opacity: 0;
+  transition: opacity 0.4s; }
   .scroll-to-top-button span {
     width: 50px;
     height: 50px;
     background-image: url("../img/scroll_to_top.svg");
     background-size: cover;
     display: inline-block; }
+  .scroll-to-top-button.visible {
+    opacity: 1; }
