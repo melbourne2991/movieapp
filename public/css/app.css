@@ -6,6 +6,9 @@ body {
   font-size: 1em;
   color: #fff; }
 
+h1 {
+  margin-top: 0; }
+
 .clearfix:before, .clearfix:after {
   content: " ";
   display: table; }
@@ -68,6 +71,7 @@ body {
 #layout {
   position: relative;
   padding-bottom: 60px;
+  padding-top: 20px;
   background: #0d0e12; }
 
 #topbar {
@@ -82,8 +86,9 @@ body {
   left: 20px;
   top: 20px;
   z-index: 10;
-  position: absolute;
-  cursor: pointer; }
+  position: fixed;
+  cursor: pointer;
+  z-index: 150; }
 
 .menu-icon span {
   background: #fff;
@@ -103,7 +108,30 @@ body {
   top: 0;
   background: #2d313f;
   padding-top: 61px;
-  transition: width 0.4s; }
+  transition: width 0.4s;
+  z-index: 100; }
+  #sidebar .vertical-menu {
+    margin-top: 20px; }
+
+.vertical-menu {
+  padding: 0;
+  margin: 0; }
+  .vertical-menu li {
+    padding: 20px 20px;
+    width: 100%;
+    display: block;
+    border-bottom: 2px solid #3a3f4f;
+    transition: background .2s;
+    cursor: pointer; }
+    .vertical-menu li a {
+      text-decoration: none;
+      color: #fff;
+      text-align: left;
+      display: inline-block; }
+    .vertical-menu li:first-child {
+      border-top: 2px solid #3a3f4f; }
+    .vertical-menu li:hover {
+      background: #3a3f4f; }
 
 #sidebar.slideout {
   width: 200px; }
@@ -174,9 +202,9 @@ body {
         background-image: url("../img/next.svg");
         background-size: cover; }
   .funky-slide .slider-container {
-    transition: all 3s;
+    transition: margin 0.5s;
     align-items: center;
-    display: flex; }
+    display: inline-flex; }
   .funky-slide .slide {
     float: left;
     transition: 1s all;
@@ -189,7 +217,7 @@ body {
       width: 100%; }
 
 .slide_details {
-  padding: 20px 20px 200px 20px; }
+  padding: 60px 20px 200px 20px; }
   .slide_details .info img {
     width: 100%; }
   .slide_details .pure-g > div {
@@ -232,3 +260,16 @@ body {
     display: inline-block; }
   .scroll-to-top-button.visible {
     opacity: 1; }
+
+.backdrop {
+  background: rgba(0, 0, 0, 0.3);
+  top: 0;
+  left: 0; }
+
+.bad_image {
+  display: block;
+  height: auto;
+  background: #ccc;
+  color: #000;
+  padding: 100px 0;
+  text-align: center; }

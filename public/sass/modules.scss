@@ -27,6 +27,7 @@
 #layout {
 	position: relative;	
 	padding-bottom: 60px;
+	padding-top: 20px;
 	background: darken($dark_1, 15%);
 }
 
@@ -43,8 +44,9 @@
 	left: 20px;
 	top: 20px;
 	z-index: 10;
-	position: absolute;
+	position: fixed;
 	cursor: pointer;
+	z-index: 150;
 }
 
 .menu-icon span {
@@ -68,6 +70,40 @@
 	background: $dark_1;
 	padding-top: 61px;
 	transition: width 0.4s;
+	z-index: 100;
+
+	.vertical-menu {
+		margin-top: 20px;
+	}
+}
+
+.vertical-menu {
+	padding: 0;
+	margin: 0;
+
+	li {
+		a {
+			text-decoration: none;
+			color: #fff;
+			text-align: left;
+			display: inline-block;
+		}
+
+		padding: 20px 20px;
+		width: 100%;
+		display: block;
+		border-bottom: 2px solid $light_1;
+		transition: background .2s;
+		cursor: pointer;
+
+		&:first-child {
+			border-top: 2px solid $light_1;
+		}
+
+		&:hover {
+			background: $light_1;
+		}
+	}
 }
 
 #sidebar.slideout {
@@ -159,11 +195,10 @@
 		}
 	}
 
-
 	.slider-container {
-		transition: all 3s;
+		transition: margin 0.5s;
 		align-items: center;
-		display: flex;
+		display: inline-flex;
 	}
 
 	.slide {
@@ -184,7 +219,7 @@
 }
 
 .slide_details {
-	padding: 20px 20px 200px 20px;
+	padding: 60px 20px 200px 20px;
 
 	.info {
 		img {
@@ -250,6 +285,21 @@
 	&.visible {
 		opacity: 1;
 	}
+}
+
+.backdrop {
+	background: rgba(0, 0, 0, 0.3);
+	top: 0;
+	left: 0;
+}
+
+.bad_image {
+	display: block;
+	height: auto;
+	background: #ccc;
+	color: #000;
+	padding: 100px 0;
+	text-align: center;
 }
 
 //sm - 568

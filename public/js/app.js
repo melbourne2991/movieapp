@@ -6,15 +6,19 @@ var app = angular.module('app', [
 	'app.services',
 	'app.directives',
 	'app.controllers'
-]).config(['$httpProvider', '$stateProvider', function($httpProvider, $stateProvider) {
+]).config(['$httpProvider', '$stateProvider', '$urlRouterProvider', function($httpProvider, $stateProvider, $urlRouterProvider) {
+	$urlRouterProvider.when('', '/');
+
 	$stateProvider
 		.state('default', {
 			templateUrl: '/templates/home.html',
-			url: '',
+			controller: 'HomeController',
+			url: '/',
 		})	
-		.state('random', {
+		.state('browseGenre', {
 			templateUrl: '/templates/browse_genre.html',
-			controller: 'BrowseGenre'
+			controller: 'BrowseGenre',
+			url: '/browse-genre/:genre_id'
 		});
 }]);
 

@@ -1,6 +1,7 @@
-<h1 class="align-center">{{ genre_name }} movies!</h1>
+<h1 class="align-center">{{ genre.name }} movies!</h1>
 
-<div data-slide-with-details="">
-	<div data-funky-slide="{{ genreId }}" data-number-of-items-in-view="5"></div>
+<div data-slide-with-details="" data-ng-if="genre">
+	<div data-funky-slide="{{ genre.id }}" data-number-of-items-in-view="5">
+	</div>
 	<div data-slide-details="selectedSlide" data-full-details="fullDetails" data-loaded="loaded"></div>
 </div>

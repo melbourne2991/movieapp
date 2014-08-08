@@ -98,96 +98,87 @@ directives.directive('funkySlide', ['$state', '$timeout', 'movieApi', function($
 			slideIncrement: '@',
 		},
 		controller: function($scope, $element, $attrs) {
-			this.imagesReady = [];
-			$scope.slides = [];
-			
+			$scope.loading = true;
+
+			console.log($scope.funkySlide);
+
+			var results = [];	
 			var genreId = $scope.funkySlide;
-
-			console.log(genreId);
-
 			var page = 1;
-
 			var current_pos = 0;
-
 			var number_of_items_in_view 	= $scope.numberOfItemsInView || 4;
+			var item_width 					= $element.find('.funky-slide').width() / number_of_items_in_view;
+			var slide_container 			= angular.element($element.find('.slider-container'));
 			var slide_increment				= $scope.slideIncrement || number_of_items_in_view;
+
 			var total_item_count;
 			var item_width;
-			var slide_container_width;
 			var slide_container;
 			var items;
-			var left_arrow;
-			var right_arrow;
 
-			var addResultsToSlider = function(results) {
-				$scope.slides = results;
+			var getMovies = function() {
+				$scope.loading = true;
 
-				console.log($scope.slides)
+				return movieApi.getDiscoverByGenre(genreId, page).then(function(results) {
+					_.forEach(results, function(movie) {
+						var img = $('<img src="' + movie.image + '">');	
+						var new_slide = $('<div class="slide"></div>');
 
-				$timeout(function() {
-					var total_item_count 			= $scope.slides.length;
-					var item_width 					= $element.find('.funky-slide').width() / number_of_items_in_view;
-					var slide_container_width 		= total_item_count * item_width;
-					var slide_container 			= angular.element($element.find('.slider-container'));
-					var items 						= angular.element($element.find('.slide'));
-					var left_arrow 					= angular.element($element.find('.nav-arrow.left'));
-					var right_arrow 				= angular.element($element.find('.nav-arrow.right'));
+						new_slide.append(img);
 
-					slide_container.width(slide_container_width);
-
-					_.forEach(items, function(item, i) {
-						angular.element(item).css({
+						new_slide.css({
 							width: item_width + 'px'
 						});
+
+						img.on('error', function() {
+							new_slide.html('<div class="bad_image">Image Not Available</div>')
+						})
+
+						new_slide.on('click', function() {
+							$scope.selectSlide(movie);
+						});
+
+						new_slide.appendTo(slide_container);
+						total_item_count = slide_container.find('.slide').length;
+
+
+						img.src = movie.image;
 					});
 
-					$scope.moveLeft = function() {
-						if(current_pos !== 0) current_pos--;
-
-						slide_container.animate({
-							marginLeft: -(item_width*slide_increment)*current_pos
-						});
-					};
-
-					$scope.moveRight = function() {
-						if(current_pos !== total_item_count/number_of_items_in_view-1) current_pos++;
-
-						slide_container.animate({
-							marginLeft: -(item_width*slide_increment)*current_pos
-						});
-					};
+					$scope.loading = false;
 				});
-			}
-
-			var getMovies = function(page){
-				return movieApi.getDiscoverByGenre(genreId, page).then(addResultsToSlider);
 			};
 
-			getMovies(page);
+			$scope.moveLeft = function() {
+				if($scope.loading) return false;
+
+				if(current_pos !== 0) current_pos--;
+
+				slide_container.css({
+					marginLeft: -(item_width*slide_increment)*current_pos
+				});
+			};
+
+			$scope.moveRight = function() {
+				if($scope.loading) return false;
+
+				if(current_pos !== total_item_count/number_of_items_in_view) current_pos++;
+				if(current_pos === total_item_count/number_of_items_in_view) {
+					page++
+					getMovies();
+				}
+
+				slide_container.css({
+					marginLeft: -(item_width*slide_increment)*current_pos
+				});
+			};
+
+			getMovies();
 		},
 		link: function(scope, element, attrs, slideWithDetailsCtrl) {
 			scope.selectSlide = function(slide) {
 				slideWithDetailsCtrl.selectSlide(slide);
 			}
-		}
-	}
-}]);
-
-directives.directive('slide', ['$state', '$timeout', '$http', function($state, $timeout, $http) {
-	return {
-		require: '^funkySlide',
-		scope: {
-			slide: '='
-		},
-		controller: function($scope, $element, $attrs) {
-
-		},
-		link: function(scope, element, attrs, funkySlideCtrl) {
-			$('<img src="' + scope.slide.image + '">').load(function(results, status, xhr) {
-				$(element).append($(this));
-			}).on('error', function() {
-				$(element).remove();
-			});
 		}
 	}
 }]);
@@ -206,6 +197,38 @@ directives.directive('slideDetails', ['$state', '$timeout', '$interval', functio
 		},
 		link: function(scope, element, attrs, slideWithDetailsCtrl) {
 
+		}
+	}
+}]);
+
+directives.directive('backdrop', [function() {
+	return {
+		scope: {
+			position: '@',
+			background: '@',
+			speed: '@'
+		},
+		controller: function($scope, $element, $attrs) {
+
+		},
+		link: function(scope, element, attrs) {
+			var position   = scope.position || 'absolute';
+			var background = scope.background || 'rgba(0, 0, 0, 0.3)';
+			var speed 	   = scope.speed || '0.3';
+
+			element.parent().css({
+				position: 'relative',
+			});
+
+			element.css({
+				position: position,
+				width: '100%',
+				height: '100%',
+				background: background,
+				top: 0,
+				left: 0,
+				transition: 'opacity ' + speed
+			});
 		}
 	}
 }]);
